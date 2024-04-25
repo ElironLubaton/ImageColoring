@@ -1,2 +1,5 @@
 # ImageColoring
-Coloring black and white images by deep learning model.
+Coloring black and white images using deep learning.
+
+
+
