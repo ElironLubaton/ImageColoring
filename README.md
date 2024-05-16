@@ -55,7 +55,9 @@ We've splited the data into training, validation and test, with the proportions 
 
 
 ## Architecture
-We haev used Wasserstein-generative adversarial network (Martin Arjovsky, 2017)  with gradient penalty (Ishaan Gulrajani, 2017) and L1 loss.
+![WGAN ARCHITECTURE](https://github.com/ElironLubaton/ImageColoring/assets/125808481/005bc5bb-5712-43ff-829d-9ee02f715a03)
+
+We have used WGAN - Wasserstein-generative adversarial network (Martin Arjovsky, 2017)  with gradient penalty (Ishaan Gulrajani, 2017) and L1 loss.
 
 #### Generator
 Our generator is based upon the U-net architecture (Olaf Ronneberger, 2015).
@@ -66,10 +68,14 @@ This part is composed of 4 blocks, where each block is composed of 2 continues b
 The decoder part of the U-net up-samples the feature representation back to the original image size, while incorporating skip connections to retain the small details.
 This part is composed of 4 blocks, where each block is composed of a transposed convolution, and 2 continues blocks of convolution, batch normalization and ReLU.
 
+![ENCODER DECODER](https://github.com/ElironLubaton/ImageColoring/assets/125808481/5dd78750-b257-47de-af83-4a6f6417de23)
+
 #### Critic (Discriminator)
 Our critic is a 'patch discriminator' (Phillip Isola, 2018).
 It consists of 5 blocks, where each block is composed of convolution, instance normalization and leaky ReLU, where only the first block lacks the normalization.
 The parameters of the critic were initialized with normal distribution with a mean of 0, and standard deviation of 0.02, as proposed by (Phillip Isola, 2018)
+
+![CRITIC](https://github.com/ElironLubaton/ImageColoring/assets/125808481/2401ba9b-bceb-48ae-89db-ed82731543a3)
 
 
 ## Training The Model
@@ -77,6 +83,8 @@ The parameters of the critic were initialized with normal distribution with a me
 #### Pre-Trainig the Generator
 We chose to pre-train our generator only in order to give it a head start, because in early runs the critic learned much faster than the generator, and the generator could not fool the critic. 
 The pre-training was done using L1 loss between the colorized images and the original images.
+
+![Pretraining](https://github.com/ElironLubaton/ImageColoring/assets/125808481/d5695240-a15d-4577-ba3c-aab2561a6f87)
 
 #### Training the Model
 The algorithm we've used is WGAN with Gradient penalty as proposed by (Ishaan Gulrajani, 2017), with some modifications.
