@@ -30,6 +30,7 @@ We have used the Flowers102 dataset:   https://www.robots.ox.ac.uk/~vgg/data/flo
 The dataset consists of 8,819 colored pictures of flowers and provides us with a diverse range of flower types in different colors, shapes, picture angels and backgrounds.
 
 
+
 ## Pre Processing
 The pre processing was done in several steps:
 #### 1 - Resizing the images to 128X128.
@@ -43,9 +44,73 @@ L - Represents lightness from black to white on a scale of 0 to 100.
 a* - On a scale of -110 to 110, negative corresponds with green, positive corresponds with red.
 b* - On a scale of -110 to 110, negative corresponds with blue, positive corresponds with yellow.
 
-When using L*a*b color space, we can give the L channel to the model (which is the greyscale image) and we want it to predict the other two channels, a* and b*. Thus, we have 220 choices for two channels, meaning we have $220^2$ 
+When using L*a*b color space, we can give the L channel to the model (which is the greyscale image) and we want it to predict the other two channels, a* and b*. Thus, we have 220 choices for two channels, meaning we have $220^2$ different combinations, which is far smaller than $256^3$, providing us with better results and a great improvement in the model's training time.
+
+#### 3 - Data Augmentation
+Each time we accesed a batch of images, we randomly flipped the images horizontally with a 50% chance.
+
+#### 4 - Spliting the data
+We've splited the data into training, validation and test, with the proportions of 70%, 15% and 15%.
+
+
+
+## Architecture
+We haev used Wasserstein-generative adversarial network (Martin Arjovsky, 2017)  with gradient penalty (Ishaan Gulrajani, 2017) and L1 loss.
+
+#### Generator
+Our generator is based upon the U-net architecture (Olaf Ronneberger, 2015).
+It consists of encoder-decoder structure:
+The encoder part of the U-net down-samples the input image, extracting features at multiple scales each time.
+This part is composed of 4 blocks, where each block is composed of 2 continues blocks of convolution, batch normalization and ReLU, and between each block a maxpooling is used.
+
+The decoder part of the U-net up-samples the feature representation back to the original image size, while incorporating skip connections to retain the small details.
+This part is composed of 4 blocks, where each block is composed of a transposed convolution, and 2 continues blocks of convolution, batch normalization and ReLU.
+
+#### Critic (Discriminator)
+Our critic is a 'patch discriminator' (Phillip Isola, 2018).
+It consists of 5 blocks, where each block is composed of convolution, instance normalization and leaky ReLU, where only the first block lacks the normalization.
+The parameters of the critic were initialized with normal distribution with a mean of 0, and standard deviation of 0.02, as proposed by (Phillip Isola, 2018)
+
+
+## Training The Model
+
+#### Pre-Trainig the Generator
+We chose to pre-train our generator only in order to give it a head start, because in early runs the critic learned much faster than the generator, and the generator could not fool the critic. 
+The pre-training was done using L1 loss between the colorized images and the original images.
+
+#### Training the Model
+The algorithm we've used is WGAN with Gradient penalty as proposed by (Ishaan Gulrajani, 2017), with some modifications.
+In the training process, the generator and the critic were trained alternately, such that the generator was trained twice on each batch, and the critic was trained only once on each batch, for a total of 110 epochs.
+
+The generator was trained by using 2 terms that were backpropagated:
+	L1 loss between the colorized images and the original images.
+	The critic's loss on the colorized images, which is the mean of the critic's output, where its input is colorized images.
+
+The critic was trained by using 2 terms that were backpropagated:
+	Wasserstein distance – the difference between the critic's loss on the colorized images and the real images.
+	A gradient penalty term multiplied by the hyper-parameter λ.
+
+#### Evaluation
+The generator performance was evaluated by using the peak signal-to-noise ratio.
+
+
+## Results
+
+#### Results from validation set while training
 
 
 
 
+## Bibliography
+
+Ishaan Gulrajani, F. A. (2017). Improved Training of Wasserstein GANs. Retrieved from Arxiv: https://arxiv.org/pdf/1704.00028.pdf
+
+Martin Arjovsky, S. C. (2017). Wasserstein GAN. Retrieved from Arxiv: https://arxiv.org/pdf/1701.07875.pdf
+
+Olaf Ronneberger, P. F. (2015). U-Net: Convolutional Networks for Biomedical. Retrieved from Arxiv: https://arxiv.org/pdf/1505.04597v1.pdf
+
+Phillip Isola, J.-Y. Z. (2018). Image-to-Image Translation with Conditional Adversarial Networks. Retrieved from Arxiv: https://arxiv.org/pdf/1611.07004.pdf
+
+
+Moein Shariatnia, (2018), Colorizing black & white images with U-Net and conditional GAN. Retrieved from Towards Data Science: https://towardsdatascience.com/colorizing-black-white-images-with-u-net-and-conditional-gan-a-tutorial-81b2df111cd8
 
