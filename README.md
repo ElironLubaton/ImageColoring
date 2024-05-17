@@ -1,4 +1,4 @@
-# ImageColoring
+# Black and White Images Coloring
 Coloring black and white images using deep learning and PyTorch.
 
 The code is found in Colab in the link provided:
@@ -105,6 +105,8 @@ The generator performance was evaluated by using the peak signal-to-noise ratio.
 ## Results
 
 #### Results from validation set while training
+Some of the images are mirrored due to the random horizontally flipping discussed at the 'Pre Processing' section.
+
 Epoch 4
 ![validation_epoch_4](https://github.com/ElironLubaton/ImageColoring/assets/125808481/e8b1a1d4-f1ba-4adf-b96e-e55f83f40911)
 
