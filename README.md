@@ -105,6 +105,28 @@ The generator performance was evaluated by using the peak signal-to-noise ratio.
 ## Results
 
 #### Results from validation set while training
+Epoch 4
+![validation_epoch_4](https://github.com/ElironLubaton/ImageColoring/assets/125808481/e8b1a1d4-f1ba-4adf-b96e-e55f83f40911)
+
+___
+
+Epoch 24
+![validation_epoch_24](https://github.com/ElironLubaton/ImageColoring/assets/125808481/ac2588ce-281c-4b4e-8f8b-49319642ad3c)
+
+___
+
+Epoch 52
+![validation_epoch_52](https://github.com/ElironLubaton/ImageColoring/assets/125808481/03524dd7-d538-4026-9a8d-2d7023a8814b)
+
+___
+
+Epoch 84
+![validation_epoch_84](https://github.com/ElironLubaton/ImageColoring/assets/125808481/f1460979-cf4a-4305-8116-13ec6488d1bd)
+
+___
+
+Epoch 110
+![validation_epoch_110](https://github.com/ElironLubaton/ImageColoring/assets/125808481/dd9cfd22-d09c-4faf-b031-c48bab00d589)
 
 
 
